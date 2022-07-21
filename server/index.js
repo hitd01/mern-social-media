@@ -3,6 +3,9 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+// Routes
+import authRoute from './routes/AuthRoute.js';
+
 const app = express();
 
 // middleware
@@ -20,5 +23,9 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log(`Listening on port ${PORT}`))
+    .then(() =>
+        app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+    )
     .catch((error) => console.error(`${error} did not connect`));
+
+app.use('/api/auth', authRoute);
