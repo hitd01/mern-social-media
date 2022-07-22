@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 // Routes
 import authRoute from './routes/AuthRoute.js';
 import userRoute from './routes/UserRoute.js';
+import postRoute from './routes/PostRoute.js';
 
 const app = express();
 
@@ -31,3 +32,4 @@ mongoose
 
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/post', postRoute);
