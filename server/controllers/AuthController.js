@@ -1,6 +1,6 @@
 import User from '../models/UserModel.js';
 import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 // @route POST api/auth/register
 // @desc Register new user
@@ -38,9 +38,18 @@ export const registerUser = async (req, res) => {
         });
         await newUser.save();
 
+        const token = jwt.sign(
+            {
+                id: newUser._id,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '2h' }
+        );
+
         res.json({
             success: true,
             message: 'User created successfully',
+            token,
         });
     } catch (error) {
         console.log(error);
@@ -85,9 +94,17 @@ export const loginUser = async (req, res) => {
         }
 
         // All good
+        const token = jwt.sign(
+            {
+                id: user._id,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '2h' }
+        );
         res.json({
             success: true,
             message: 'Logged in successfully',
+            token,
         });
     } catch (error) {
         console.log(error);
