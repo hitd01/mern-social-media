@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 // Routes
 import authRoute from './routes/AuthRoute.js';
+import userRoute from './routes/UserRoute.js';
 
 const app = express();
 
@@ -29,3 +30,4 @@ mongoose
     .catch((error) => console.error(`${error} did not connect`));
 
 app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);

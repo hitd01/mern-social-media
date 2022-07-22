@@ -76,7 +76,7 @@ export const loginUser = async (req, res) => {
         }
 
         // Username found
-        const passwordValid = await bcrypt.compare(user.password, password);
+        const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) {
             return res.status(400).json({
                 success: false,
@@ -88,7 +88,6 @@ export const loginUser = async (req, res) => {
         res.json({
             success: true,
             message: 'Logged in successfully',
-            accessToken,
         });
     } catch (error) {
         console.log(error);
