@@ -6,6 +6,7 @@ import Cover from '../../../img/cover.jpg';
 import Profile from '../../../img/profileImg.jpg';
 
 const ProfileCard = () => {
+    const isProfilePage = true;
     return (
         <div className="ProfileCard">
             <div className="profile-img">
@@ -33,7 +34,7 @@ const ProfileCard = () => {
                 </div>
                 <hr />
             </div>
-            <span>My Profile</span>
+            {isProfilePage ? '' : <span>My Profile</span>}
         </div>
     );
 };
