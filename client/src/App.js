@@ -1,7 +1,17 @@
 import React from 'react';
+import './App.scss';
+
+// pages
+import { Home } from './pages';
 
 const App = () => {
-    return <div>App</div>;
+    return (
+        <div className="App">
+            <div className="blur"></div>
+            <div className="blur"></div>
+            <Home />
+        </div>
+    );
 };
 
 export default App;
