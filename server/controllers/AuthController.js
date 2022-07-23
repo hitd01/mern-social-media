@@ -46,10 +46,13 @@ export const registerUser = async (req, res) => {
             { expiresIn: '2h' }
         );
 
+        const userResult = await User.findOne({ username }).select('-password');
+
         res.json({
             success: true,
             message: 'User created successfully',
             token,
+            user: userResult,
         });
     } catch (error) {
         console.log(error);
@@ -101,10 +104,12 @@ export const loginUser = async (req, res) => {
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '2h' }
         );
+        const userResult = await User.findOne({ username }).select('-password');
         res.json({
             success: true,
             message: 'Logged in successfully',
             token,
+            user: userResult,
         });
     } catch (error) {
         console.log(error);

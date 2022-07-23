@@ -1,0 +1,81 @@
+@use '../../scss/' as *;
+
+.Auth {
+    @include flex(center, center);
+    height: 100vh;
+    gap: 4rem;
+    position: relative;
+
+    > div {
+        @include flex(center, center);
+    }
+
+    .auth-left {
+        gap: 2rem;
+
+        > img {
+            width: 4rem;
+            height: 4rem;
+        }
+
+        .web-name > h1 {
+            font-size: 3rem;
+            background-color: red;
+
+            /* Create the gradient. */
+            background-image: $button-bg;
+
+            /* Set the background size and repeat properties. */
+            background-size: 100%;
+            background-repeat: repeat;
+
+            /* Use the text as a mask for the background. */
+            /* This will show the gradient as a text color rather than element bg. */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-background-clip: text;
+            -moz-text-fill-color: transparent;
+        }
+
+        .web-name > h6 {
+            font-size: 0.85rem;
+        }
+    }
+
+    .info-form {
+        @include flex(center, center);
+        flex-direction: column;
+        gap: 2rem;
+        background-color: $card-color;
+        border-radius: 1rem;
+        padding: 1rem;
+
+        > div {
+            @include flex(center, center);
+            gap: 1rem;
+            height: 2rem;
+            width: 100%;
+
+            .info-input {
+                border: none;
+                outline: none;
+                background-color: $input-color;
+                border-radius: 8px;
+                padding: 20px;
+                flex: 1;
+            }
+
+            .info-button {
+                width: 6rem;
+                height: 2rem;
+                align-self: flex-end;
+            }
+
+            .suggest-message {
+                font-size: 12px;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+}
