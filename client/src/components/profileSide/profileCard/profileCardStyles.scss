@@ -1,0 +1,85 @@
+@use '../../../scss/' as *;
+
+.ProfileCard {
+    border-radius: 1.5rem;
+    @include flex(stretch, flex-start);
+    flex-direction: column;
+    position: relative;
+    gap: 1rem;
+    overflow-x: clip;
+    background: $card-color;
+
+    .profile-img {
+        position: relative;
+        flex-direction: column;
+        @include flex(center, center);
+
+        > img:nth-of-type(1) {
+            width: 100%;
+        }
+
+        > img:nth-of-type(2) {
+            width: 6rem;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -3rem;
+            box-shadow: $profile-shadow;
+        }
+    }
+
+    .profile-name {
+        @include flex(center, flex-start);
+        flex-direction: column;
+        margin-top: 3rem;
+        gap: 10px;
+
+        > span:nth-of-type(1) {
+            font-weight: bold;
+        }
+    }
+
+    .follow-status {
+        @include flex(center, center);
+        flex-direction: column;
+        gap: 0.75rem;
+
+        > hr {
+            width: 85%;
+            border: 1px solid $hr-color;
+        }
+
+        > div {
+            @include flex(center, space-around);
+            gap: 1rem;
+            width: 80%;
+        }
+
+        .follow {
+            @include flex(center, center);
+            flex-direction: column;
+            gap: 0.4rem;
+
+            > span:nth-of-type(1) {
+                font-weight: bold;
+            }
+
+            > span:nth-of-type(2) {
+                color: $gray-color;
+                font-size: 13px;
+            }
+        }
+
+        .vl {
+            height: 150%;
+            border-left: 2px solid $hr-color;
+        }
+    }
+
+    > span {
+        font-weight: bold;
+        color: $orange-color;
+        align-self: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
+    }
+}
