@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './profileCardStyles.scss';
-
 // images
 import Cover from '../../../img/cover.jpg';
 import Profile from '../../../img/profileImg.jpg';
+// react router dom hooks
+import { useLocation, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const ProfileCard = () => {
-    const isProfilePage = true;
+    // location
+    const location = useLocation();
+
+    // states
+    const [isProfilePage, setIsProfilePage] = useState(true);
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+        if (location?.pathname === '/') {
+            setIsProfilePage(false);
+        }
+    }, [location]);
+
+    useEffect(() => {
+        if (localStorage.getItem('profile')) {
+            setProfile(JSON.parse(localStorage.getItem('profile')));
+        }
+    }, []);
+
     return (
         <div className="ProfileCard">
             <div className="profile-img">
@@ -34,7 +54,11 @@ const ProfileCard = () => {
                 </div>
                 <hr />
             </div>
-            {isProfilePage ? '' : <span>My Profile</span>}
+            {isProfilePage ? (
+                ''
+            ) : (
+                <Link to={`/profile/${profile?.user?._id}`}>My Profile</Link>
+            )}
         </div>
     );
 };

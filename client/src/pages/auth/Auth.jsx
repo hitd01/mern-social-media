@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './authStyles.scss';
 // image
 import Logo from '../../img/logo.png';
-//
+// react redux hooks
 import { useDispatch, useSelector } from 'react-redux';
+// react router dom hooks
+import { useNavigate } from 'react-router-dom';
 // auth function
 import { signup, login } from './authSlice';
 
 const Auth = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     // states
     const initialState = {
         firstname: '',
@@ -22,7 +25,13 @@ const Auth = () => {
     const [data, setData] = useState(initialState);
 
     // redux state
-    const { authLoading } = useSelector((state) => state.auth);
+    const { authLoading, authData } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (localStorage.getItem('profile') && authData) {
+            navigate(-1);
+        }
+    }, [authData, navigate]);
 
     // Reset Form
     const resetForm = () => {
