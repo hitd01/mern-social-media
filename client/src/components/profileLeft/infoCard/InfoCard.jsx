@@ -3,8 +3,14 @@ import './infoCardStyles.scss';
 // icon
 import { UilPen } from '@iconscout/react-unicons';
 import ProfileModal from './profileModal/ProfileModal';
+// react redux hooks
+import { useDispatch } from 'react-redux';
+// auth reducers
+import { logout } from '../../../pages/auth/authSlice';
 
 const InfoCard = () => {
+    const dispatch = useDispatch();
+
     const [modalOpened, setModalOpened] = useState(false);
     return (
         <div className="InfoCard">
@@ -44,7 +50,12 @@ const InfoCard = () => {
                 <span>Ha Noi</span>
             </div>
 
-            <button className="button logout-button">Logout</button>
+            <button
+                className="button logout-button"
+                onClick={() => dispatch(logout())}
+            >
+                Logout
+            </button>
         </div>
     );
 };
