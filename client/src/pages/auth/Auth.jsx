@@ -29,7 +29,7 @@ const Auth = () => {
 
     useEffect(() => {
         if (localStorage.getItem('profile') && authData) {
-            navigate(-1);
+            navigate('../', { replace: true });
         }
     }, [authData, navigate]);
 

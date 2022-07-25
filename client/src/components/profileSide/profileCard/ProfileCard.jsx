@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './profileCardStyles.scss';
-// images
-import Cover from '../../../img/cover.jpg';
-import Profile from '../../../img/profileImg.jpg';
 // react router dom hooks
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect } from 'react';
+
+const serverPublic =
+    process.env.NODE_ENV !== 'production'
+        ? process.env.REACT_APP_DEV_PUBLIC_FOLDER
+        : process.env.REACT_APP_PRODUCT_PUBLIC_FOLDER;
 
 const ProfileCard = () => {
     // location
@@ -30,26 +32,46 @@ const ProfileCard = () => {
     return (
         <div className="ProfileCard">
             <div className="profile-img">
-                <img src={Cover} alt="" />
-                <img src={Profile} alt="" />
+                <img
+                    src={
+                        profile?.user?.coverPicture
+                            ? `${serverPublic}/${profile?.user?.coverPicture}`
+                            : `${serverPublic}/default-cover.jpg`
+                    }
+                    alt=""
+                />
+                <img
+                    src={
+                        profile?.user?.coverPicture
+                            ? `${serverPublic}/${profile?.user?.profilePicture}`
+                            : `${serverPublic}/default-profile.png`
+                    }
+                    alt=""
+                />
             </div>
 
             <div className="profile-name">
-                <span>HIT Panda</span>
-                <span>Fullstack Web Developer</span>
+                <span>
+                    {profile?.user?.firstname} {profile?.user?.lastname}
+                </span>
+                <span>
+                    {profile?.user?.worksAt
+                        ? profile?.user?.worksAt
+                        : 'Write about yourself'}
+                </span>
             </div>
 
             <div className="follow-status">
                 <hr />
                 <div>
                     <div className="follow">
-                        <span>6,890</span>
-                        <span>Followings</span>
+                        <span>{profile?.user?.followers?.length}</span>
+                        <span>Followers</span>
                     </div>
                     <div className="vl"></div>
                     <div className="follow">
-                        <span>1</span>
-                        <span>Followers</span>
+                        <span>{profile?.user?.following?.length}</span>
+                        <span>Followings</span>
                     </div>
                 </div>
                 <hr />
