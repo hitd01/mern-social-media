@@ -178,7 +178,7 @@ export const getTimelinePosts = async (req, res) => {
         }
 
         // All good
-        const currentPosts = await PostModel.find({ userId: userId });
+        const currentPosts = await PostModel.find({ userId });
         const followingPosts = await UserModel.aggregate([
             {
                 $match: {
@@ -204,7 +204,7 @@ export const getTimelinePosts = async (req, res) => {
         res.json({
             success: true,
             posts: currentPosts
-                .contact(...followingPosts[0].followingPosts)
+                .concat(...followingPosts[0].followingPosts)
                 .sort((a, b) => {
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 }),

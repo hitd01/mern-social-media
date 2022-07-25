@@ -1,17 +1,18 @@
-import axios from 'axios';
+import api from './config';
+// import axios from 'axios';
 
-const apiUrl =
-    process.env.NODE_ENV !== 'production'
-        ? process.env.REACT_APP_DEV_URL
-        : process.env.REACT_APP_PRODUCT_URL;
+// const apiUrl =
+//     process.env.NODE_ENV !== 'production'
+//         ? process.env.REACT_APP_DEV_URL
+//         : process.env.REACT_APP_PRODUCT_URL;
 
-const api = axios.create({
-    baseURL: `${apiUrl}`,
-    headers: {
-        Authorization:
-            'Bearer ' + JSON.parse(localStorage.getItem('profile'))?.token,
-    },
-});
+// const api = axios.create({
+//     baseURL: `${apiUrl}`,
+//     headers: {
+//         Authorization:
+//             'Bearer ' + JSON.parse(localStorage.getItem('profile'))?.token,
+//     },
+// });
 
 export const getUser = (userId) => api.get(`/user/${userId}`);
 export const updateUser = (id, formData) => api.put(`/user/${id}`, formData);

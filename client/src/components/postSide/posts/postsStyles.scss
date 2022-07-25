@@ -23,6 +23,10 @@
         .post-react {
             @include flex(flex-start, flex-start);
             gap: 1.5rem;
+
+            .like {
+                cursor: pointer;
+            }
         }
 
         .total-likes {
