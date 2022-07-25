@@ -3,8 +3,23 @@ import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 // pages
 import { Home, Profile, Auth } from './pages';
+// react redux hooks
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import setAuthToken from './utils/setAuthToken';
 
 const App = () => {
+    // redux state
+    const { authData } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (authData && localStorage.getItem('profile')) {
+            setAuthToken(JSON.parse(localStorage.getItem('profile'))?.token);
+        } else {
+            setAuthToken(null);
+        }
+    }, [authData]);
+
     return (
         <div className="App">
             <div className="blur" style={{ top: '-18%', right: '0' }}></div>

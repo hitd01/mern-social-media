@@ -8,20 +8,24 @@ import cors from 'cors';
 import authRoute from './routes/AuthRoute.js';
 import userRoute from './routes/UserRoute.js';
 import postRoute from './routes/PostRoute.js';
+import uploadRoute from './routes/UploadRoute.js';
 
 const app = express();
 
 // middleware
+app.use(cors());
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-app.use(cors());
-
 dotenv.config();
+// to server images inside public folder
+app.use(express.static('public'));
+app.use('/images', express.static('images'));
 
 // env variables
 const PORT = process.env.PORT;
 const DB = process.env.MONGO_DB;
 
+// connect db
 mongoose
     .connect(DB, {
         useNewUrlParser: true,
@@ -32,6 +36,8 @@ mongoose
     )
     .catch((error) => console.error(`${error} did not connect`));
 
+// use routes
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use('/api/post', postRoute);
+app.use('/api/upload', uploadRoute);

@@ -1,29 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './followersCard.scss';
-// data
-import { followersData } from '../../../data/FollowersCardData';
+// user requests
+import { getAllUsers } from '../../../api/userApi';
+// react redux hooks
+import { useSelector } from 'react-redux';
+// components
+import User from '../../user/User';
+import FollowersModal from './followersModal/FollowersModal';
 
-const FollowersCard = () => {
+const FollowersCard = ({ location }) => {
+    // states
+    const [modalOpened, setModalOpened] = useState(false);
+    const [persons, setPersons] = useState([]);
+
+    // redux states
+    const { authData } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        const fetchPersons = async () => {
+            const { data } = await getAllUsers();
+            if (location) {
+                setPersons(data?.users);
+            } else {
+                setPersons(data?.users?.slice(0, 4));
+            }
+        };
+        fetchPersons();
+    }, [location]);
+
     return (
         <div className="FollowersCard">
             <h3>People you may know</h3>
 
-            {followersData.map((follower) => (
-                <div className="follower" key={follower.id}>
-                    <div>
-                        <img
-                            src={follower.img}
-                            alt=""
-                            className="follower-image"
-                        />
-                        <div className="name">
-                            <span>{follower.name}</span>
-                            <span>@{follower.username}</span>
-                        </div>
-                    </div>
-                    <button className="button fc-button">Follow</button>
-                </div>
-            ))}
+            {persons.map(
+                (person) =>
+                    person?._id !== authData?.user?._id && (
+                        <User person={person} key={person?._id} />
+                    )
+            )}
+
+            {!location ? (
+                <button
+                    className="show-more button"
+                    onClick={() => setModalOpened(true)}
+                >
+                    Show more
+                </button>
+            ) : (
+                ''
+            )}
+
+            <FollowersModal
+                modalOpened={modalOpened}
+                setModalOpened={setModalOpened}
+            />
         </div>
     );
 };
