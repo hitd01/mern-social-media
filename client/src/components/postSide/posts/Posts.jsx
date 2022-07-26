@@ -38,11 +38,20 @@ const Posts = () => {
     }, [dispatch, authData]);
 
     useEffect(() => {
-        if (params.id) {
-            setPostsPreview(posts?.filter((post) => post.userId === params.id));
-        } else {
-            setPostsPreview(posts);
+        let isMounted = true;
+        if (isMounted) {
+            if (params.id) {
+                setPostsPreview(
+                    posts?.filter((post) => post.userId === params.id)
+                );
+            } else {
+                setPostsPreview(posts);
+            }
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [params, posts]);
 
     if (postLoading !== 'success') {
@@ -54,19 +63,19 @@ const Posts = () => {
             {postLoading === 'pending'
                 ? 'Fetching posts....'
                 : postsPreview.map((post) => (
-                      <Post key={post._id} post={post} user={authData.user} />
+                      <Post key={post._id} post={post} user={authData?.user} />
                   ))}
         </div>
     );
 };
 
 const Post = ({ post, user }) => {
-    const [liked, setLiked] = useState(post.likes.includes(user._id));
+    const [liked, setLiked] = useState(post.likes.includes(user?._id));
     const [likes, setLikes] = useState(post.likes.length);
 
     // Handle like post
     const handleLike = (postId) => {
-        likePost(postId, user._id);
+        likePost(postId, user?._id);
         setLiked((prev) => !prev);
         liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1);
     };
@@ -100,13 +109,19 @@ const PostDetail = ({ post }) => {
     const [name, setName] = useState('');
 
     useEffect(() => {
-        getUser(post.userId)
-            .then(({ data }) => {
-                setName(data.user.firstname);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        let isMounted = true;
+        if (isMounted) {
+            getUser(post.userId)
+                .then(({ data }) => {
+                    setName(data.user.firstname);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        return () => {
+            isMounted = false;
+        };
     }, [post]);
 
     return (

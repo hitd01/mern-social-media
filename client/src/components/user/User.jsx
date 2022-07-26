@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 // react redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 // user function
@@ -15,9 +16,15 @@ const User = ({ person }) => {
     const { authData } = useSelector((state) => state.auth);
 
     // states
-    const [following, setFollowing] = useState(
-        person?.followers?.includes(authData?.user?._id)
-    );
+    const [following, setFollowing] = useState(false);
+
+    useEffect(() => {
+        if (authData?.user?.following?.includes(person?._id)) {
+            setFollowing(true);
+        } else {
+            setFollowing(false);
+        }
+    }, [person, authData]);
 
     // Handle follow
     const handleFollow = () => {

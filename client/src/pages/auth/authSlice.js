@@ -64,6 +64,20 @@ export const unfollowUser = createAsyncThunk(
     }
 );
 
+export const updateUser = createAsyncThunk(
+    'auth/updateUser',
+    async (dataUpdate) => {
+        try {
+            const { createdAt, updatedAt, _id, ...otherDetails } = dataUpdate;
+            const { data } = await userApi.updateUser(_id, { ...otherDetails });
+            return data;
+        } catch (error) {
+            alert(error?.response?.data?.message);
+            return error?.response?.data;
+        }
+    }
+);
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -144,6 +158,21 @@ export const authSlice = createSlice({
             state.updateLoading = 'success';
         },
         [unfollowUser.rejected]: (state, action) => {
+            state.updateLoading = 'failed';
+        },
+        // update user
+        [updateUser.pending]: (state, action) => {
+            state.updateLoading = 'pending';
+        },
+        [updateUser.fulfilled]: (state, action) => {
+            if (action.payload?.success) {
+                const { user } = action.payload;
+                state.authData.user = { ...user };
+                localStorage.setItem('profile', JSON.stringify(state.authData));
+            }
+            state.updateLoading = 'success';
+        },
+        [updateUser.rejected]: (state, action) => {
             state.updateLoading = 'failed';
         },
     },

@@ -42,8 +42,7 @@ export const registerUser = async (req, res) => {
             {
                 id: newUser._id,
             },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '2h' }
+            process.env.ACCESS_TOKEN_SECRET
         );
 
         const userResult = await User.findOne({ username }).select('-password');
@@ -101,8 +100,7 @@ export const loginUser = async (req, res) => {
             {
                 id: user._id,
             },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '2h' }
+            process.env.ACCESS_TOKEN_SECRET
         );
         const userResult = await User.findOne({ username }).select('-password');
         res.json({

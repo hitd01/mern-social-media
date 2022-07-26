@@ -47,13 +47,14 @@ export const getUser = async (req, res) => {
 };
 
 /**
- * @route PUT api/auth/user/:id
+ * @route PUT api/user/:id
  * @desc Update a user
  * @access Private
  */
 export const updateUser = async (req, res) => {
     const id = req.params.id;
     const { _id, password, firstname, lastname } = req.body;
+    console.log(req.body);
 
     // Simple validation
     if (!firstname || !lastname) {
@@ -69,13 +70,14 @@ export const updateUser = async (req, res) => {
                 const salt = await bcrypt.genSalt(10);
                 req.body.password = await bcrypt.hash(password, salt);
             }
-            const userUpdated = await User.findByIdAndUpdate(id, req.body, {
+            await User.findByIdAndUpdate(id, req.body, {
                 new: true,
             });
+            const userResult = await User.findOne({ _id }).select('-password');
             res.json({
                 success: true,
                 message: 'User updated',
-                user: userUpdated,
+                user: userResult,
             });
         } catch (error) {
             res.status(500).json({

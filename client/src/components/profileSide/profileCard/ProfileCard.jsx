@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './profileCardStyles.scss';
 // react router dom hooks
-import { useLocation, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useLocation, Link, useParams } from 'react-router-dom';
+// react redux hooks
+import { useSelector } from 'react-redux';
+// user api
+import { getUser } from '../../../api/userApi';
 
 const serverPublic =
     process.env.NODE_ENV !== 'production'
@@ -12,10 +15,33 @@ const serverPublic =
 const ProfileCard = () => {
     // location
     const location = useLocation();
+    const params = useParams();
 
     // states
     const [isProfilePage, setIsProfilePage] = useState(true);
     const [profile, setProfile] = useState(null);
+    // redux states
+    const { authData } = useSelector((state) => state.auth);
+
+    // component mount
+    useEffect(() => {
+        const fetchProfileUser = async () => {
+            if (isProfilePage && params.id) {
+                if (params.id === authData?.user?._id) {
+                    setProfile(authData?.user);
+                } else {
+                    const { data } = await getUser(params.id);
+                    if (data?.success) {
+                        setProfile(data?.user);
+                    }
+                }
+            } else {
+                setProfile(authData?.user);
+            }
+        };
+
+        fetchProfileUser();
+    }, [authData, params, isProfilePage]);
 
     useEffect(() => {
         if (location?.pathname === '/') {
@@ -23,27 +49,21 @@ const ProfileCard = () => {
         }
     }, [location]);
 
-    useEffect(() => {
-        if (localStorage.getItem('profile')) {
-            setProfile(JSON.parse(localStorage.getItem('profile')));
-        }
-    }, []);
-
     return (
         <div className="ProfileCard">
             <div className="profile-img">
                 <img
                     src={
-                        profile?.user?.coverPicture
-                            ? `${serverPublic}/${profile?.user?.coverPicture}`
+                        profile?.coverPicture
+                            ? `${serverPublic}/${profile?.coverPicture}`
                             : `${serverPublic}/default-cover.jpg`
                     }
                     alt=""
                 />
                 <img
                     src={
-                        profile?.user?.coverPicture
-                            ? `${serverPublic}/${profile?.user?.profilePicture}`
+                        profile?.profilePicture
+                            ? `${serverPublic}/${profile?.profilePicture}`
                             : `${serverPublic}/default-profile.png`
                     }
                     alt=""
@@ -52,11 +72,11 @@ const ProfileCard = () => {
 
             <div className="profile-name">
                 <span>
-                    {profile?.user?.firstname} {profile?.user?.lastname}
+                    {profile?.firstname} {profile?.lastname}
                 </span>
                 <span>
-                    {profile?.user?.worksAt
-                        ? profile?.user?.worksAt
+                    {profile?.worksAt
+                        ? profile?.worksAt
                         : 'Write about yourself'}
                 </span>
             </div>
@@ -65,12 +85,12 @@ const ProfileCard = () => {
                 <hr />
                 <div>
                     <div className="follow">
-                        <span>{profile?.user?.followers?.length}</span>
+                        <span>{profile?.followers?.length}</span>
                         <span>Followers</span>
                     </div>
                     <div className="vl"></div>
                     <div className="follow">
-                        <span>{profile?.user?.following?.length}</span>
+                        <span>{profile?.following?.length}</span>
                         <span>Followings</span>
                     </div>
                 </div>
@@ -79,7 +99,7 @@ const ProfileCard = () => {
             {isProfilePage ? (
                 ''
             ) : (
-                <Link to={`/profile/${profile?.user?._id}`}>My Profile</Link>
+                <Link to={`/profile/${profile?._id}`}>My Profile</Link>
             )}
         </div>
     );
