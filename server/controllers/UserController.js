@@ -54,7 +54,6 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const id = req.params.id;
     const { _id, password, firstname, lastname } = req.body;
-    console.log(req.body);
 
     // Simple validation
     if (!firstname || !lastname) {

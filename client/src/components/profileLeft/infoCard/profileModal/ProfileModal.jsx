@@ -145,13 +145,13 @@ const ProfileModal = ({ modalOpened, setModalOpened, user }) => {
                 </div>
 
                 <div>
-                    Profile Image
+                    Profile image
                     <input
                         type="file"
                         name="profileImage"
                         onChange={onImageChange}
                     />
-                    Cover Image
+                    Cover image
                     <input
                         type="file"
                         name="coverImage"

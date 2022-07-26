@@ -22,7 +22,11 @@ const FollowersCard = ({ location }) => {
             if (location) {
                 setPersons(data?.users);
             } else {
-                setPersons(data?.users?.slice(0, 4));
+                if (data?.users?.length > 5) {
+                    setPersons(data?.users?.slice(0, 4));
+                } else {
+                    setPersons(data?.users);
+                }
             }
         };
         fetchPersons();
